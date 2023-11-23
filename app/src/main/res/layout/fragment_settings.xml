@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/settings_reset_lpassword_layout"
+            android:layout_width="374dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/settings_reset_password_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Reset your password"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/settings_enter_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="25dp"
+                android:ems="10"
+                android:hint="Enter your current password"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/settings_enter_new_password_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Enter new password"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/settings_re_enter_new_passsword_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:hint="Re-enter new password"
+                android:inputType="textPassword" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/settings_logout_text"
+            android:layout_width="210dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="184dp"
+            android:text="Click here to logout -->"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/settings_logout_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_reset_lpassword_layout" />
+
+        <Button
+            android:id="@+id/settings_logout_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="168dp"
+            android:text="Log out"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/settings_logout_text"
+            app:layout_constraintTop_toBottomOf="@+id/settings_reset_lpassword_layout" />
+
+        <Button
+            android:id="@+id/settings_reset_password_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_password"
+            app:layout_constraintBottom_toTopOf="@+id/settings_logout_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_reset_lpassword_layout"
+            app:layout_constraintVertical_bias="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

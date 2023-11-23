@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "42371792204",
+    "project_id": "androidapp-f26f5",
+    "storage_bucket": "androidapp-f26f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42371792204:android:8347e0c73a7996267063e9",
+        "android_client_info": {
+          "package_name": "com.akshay.webengage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2DvgxpKCErs3LuwxRx_KearBVvFk_ozA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
