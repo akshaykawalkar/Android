@@ -24,15 +24,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccount extends AppCompatActivity {
-   private TextView textView;
-  private   Button createAccountButton;
+    private TextView textView;
+    private Button createAccountButton;
     private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
-   private FirebaseDatabase db;
-   private DatabaseReference reference;
+    private FirebaseDatabase db;
+    private DatabaseReference reference;
     private ActivityMainBinding binding;
-   private String firstName, lastName, email;
+    private String firstName, lastName, email;
     static String createdUserEmail;
 
     @Override
@@ -50,7 +50,6 @@ public class CreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        binding=ActivityMainBinding.inflate(getLayoutInflater());
         mAuth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_create_account);
         textView = findViewById(R.id.signin_text);
@@ -69,7 +68,21 @@ public class CreateAccount extends AppCompatActivity {
                 lastName = lastNameEditText.getText().toString();
                 createdUserEmail = emailEditText.getText().toString();
                 email = emailEditText.getText().toString().replace("@", "").replace(".", "");
-                if (firstName != null && lastName != null) {
+
+                if (firstName.isEmpty())
+                {
+                    firstNameEditText.setError("Please enter first name");
+                }
+                if (lastName.isEmpty())
+                {
+                    lastNameEditText.setError("Please enter last name");
+                }
+                if (email.isEmpty())
+                {
+                    emailEditText.setError("Please enter email");
+                }
+
+                if (!firstName.isEmpty() && !lastName.isEmpty()) {
                     Users users = new Users(firstName, lastName, email);
                     db = FirebaseDatabase.getInstance();
                     reference = db.getReference("Users");
@@ -82,10 +95,9 @@ public class CreateAccount extends AppCompatActivity {
                             emailEditText.setText("");
                         }
                     });
+                    progressBar.setVisibility(View.VISIBLE);
                 }
 
-
-                progressBar.setVisibility(View.VISIBLE);
                 String emailValue, passwordValue;
                 emailValue = emailEditText.getText().toString();
                 passwordValue = passwordEditText.getText().toString();
