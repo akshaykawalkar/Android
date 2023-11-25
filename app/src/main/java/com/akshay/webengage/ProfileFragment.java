@@ -18,14 +18,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ProfileFragment extends Fragment {
     TextView firstNameText,lastNameText, emailText;
+    String firstName,lastName,email;
     DatabaseReference reference;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState==null)
+        {
+        }
+        else {
+            firstNameText.setText(savedInstanceState.getString("firstName"));
+            lastNameText.setText(savedInstanceState.getString("lastName"));
+            emailText.setText(savedInstanceState.getString("email"));
+        }
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,11 +68,11 @@ public class ProfileFragment extends Fragment {
                          DataSnapshot dataSnapshot=task.getResult();
                          String firstName=String.valueOf(dataSnapshot.child("firstName").getValue());
                          String lastName=String.valueOf(dataSnapshot.child("lastName").getValue());
-                         String email=String.valueOf(dataSnapshot.child("email").getValue());
+                         String email=Login.loginUserEmail;
                          if (firstName!=null&&lastName!=null&&emailText!=null) {
                              firstNameText.setText(firstName);
                              lastNameText.setText(lastName);
-                             emailText.setText(Login.loginUserEmail);
+                             emailText.setText(email);
                          }
                      }
                      else {
@@ -80,5 +91,12 @@ public class ProfileFragment extends Fragment {
         if (Login.loginUserEmail!=null) {
             readData(Login.loginUserEmail.replace("@", "").replace(".", ""));
         }
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("fistName",firstName);
+        outState.putString("lastName",lastName);
+        outState.putString("email",email);
     }
 }
