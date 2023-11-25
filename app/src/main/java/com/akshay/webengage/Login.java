@@ -28,6 +28,7 @@ public class Login extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
     static String loginUserEmail;
+    static String currentPassword;
 
     @Override
     public void onStart() {
@@ -78,6 +79,7 @@ public class Login extends AppCompatActivity {
                 emailValue = email.getText().toString();
                 loginUserEmail = email.getText().toString();
                 passwordValue = password.getText().toString();
+                currentPassword=password.getText().toString();
                 if (emailValue.isEmpty())
                 {
                     email.setError("Please enter first name");
