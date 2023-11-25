@@ -46,7 +46,6 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        currentUserEmail=Login.loginUserEmail;
         logoutButton = view.findViewById(R.id.settings_logout_button);
         currentPassword = view.findViewById(R.id.settings_enter_password_input);
         newPassword = view.findViewById(R.id.settings_enter_new_password_input);
@@ -54,6 +53,13 @@ public class SettingsFragment extends Fragment {
         resetPassword = view.findViewById(R.id.settings_reset_password_button);
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        currentUserEmail = Login.loginUserEmail;
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,39 +68,36 @@ public class SettingsFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
         resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String currentPasswordValue,newPasswordValue,reEnterNewPasswordValue;
+                String currentPasswordValue, newPasswordValue, reEnterNewPasswordValue;
                 currentPasswordValue = currentPassword.getText().toString();
                 newPasswordValue = newPassword.getText().toString();
                 reEnterNewPasswordValue = renewPassword.getText().toString();
-                if (currentPasswordValue.isEmpty())
-                {
-                   currentPassword.setError("Please enter current password");
+                if (currentPasswordValue.isEmpty()) {
+                    currentPassword.setError("Please enter current password");
                 }
-                if (newPasswordValue.isEmpty())
-                {
+                if (newPasswordValue.isEmpty()) {
                     newPassword.setError("Please enter new password");
                 }
-                if (reEnterNewPasswordValue.isEmpty())
-                {
+                if (reEnterNewPasswordValue.isEmpty()) {
                     renewPassword.setError("Please re-enter new password");
                 }
-                if (!currentPasswordValue.isEmpty()&& !newPasswordValue.isEmpty() && !reEnterNewPasswordValue.isEmpty() )
-                {
-                    if (currentUserEmail.isEmpty()){
-                        Toast.makeText(getActivity(),"Please logout and login to change the password",Toast.LENGTH_SHORT).show();
+                if (!currentPasswordValue.isEmpty() && !newPasswordValue.isEmpty() && !reEnterNewPasswordValue.isEmpty()) {
+                    if (currentUserEmail.isEmpty()) {
+                        Toast.makeText(getActivity(), "Please logout and login to change the password", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (newPasswordValue.equalsIgnoreCase(reEnterNewPasswordValue))
-                    {
+                    if (newPasswordValue.equalsIgnoreCase(reEnterNewPasswordValue)) {
                         auth.signInWithEmailAndPassword(currentUserEmail, currentPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 user.updatePassword(newPassword.getText().toString());
                                 Toast.makeText(getActivity(), "Password is updated!!", Toast.LENGTH_SHORT).show();
+                                currentPassword.setText("");
+                                newPassword.setText("");
+                                renewPassword.setText("");
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -102,12 +105,12 @@ public class SettingsFragment extends Fragment {
                                 Toast.makeText(getActivity(), "Please check current password", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }
-                    else {
-                        Toast.makeText(getActivity(),"New password and re-enter password is not same",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "New password and re-enter password is not same", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
+
     }
 }

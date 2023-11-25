@@ -17,6 +17,10 @@ public class ForgotPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forgot_password);
         passwordInput=findViewById(R.id.forgot_email_input);
         resetPasswordButton=findViewById(R.id.forgot_password_button);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
         resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -30,6 +34,5 @@ public class ForgotPassword extends AppCompatActivity {
                 }
             }
         });
-
     }
 }

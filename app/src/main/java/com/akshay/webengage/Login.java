@@ -54,7 +54,6 @@ public class Login extends AppCompatActivity {
         loginButton = findViewById(R.id.sign_button);
         forgotPassword = findViewById(R.id.sign_forgot_password_button);
         mAuth = FirebaseAuth.getInstance();
-
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +106,11 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 }

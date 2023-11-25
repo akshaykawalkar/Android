@@ -15,10 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 public class HomeFragment extends Fragment {
-
  TextView customerData, analytics,segmentation;
-
-
     public HomeFragment() {
         super(R.layout.fragment_home);
 
@@ -42,6 +39,15 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
        customerData=view.findViewById(R.id.home_customer_link);
         customerData.setMovementMethod(LinkMovementMethod.getInstance());
+        analytics=view.findViewById(R.id.home_analytics_link);
+        analytics.setMovementMethod(LinkMovementMethod.getInstance());
+        segmentation=view.findViewById(R.id.home_segmentation_link);
+        segmentation.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         customerData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,8 +56,6 @@ public class HomeFragment extends Fragment {
                 startActivity(browserIntent);
             }
         });
-        analytics=view.findViewById(R.id.home_analytics_link);
-        analytics.setMovementMethod(LinkMovementMethod.getInstance());
         analytics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,8 +64,6 @@ public class HomeFragment extends Fragment {
                 startActivity(browserIntent);
             }
         });
-        segmentation=view.findViewById(R.id.home_segmentation_link);
-        segmentation.setMovementMethod(LinkMovementMethod.getInstance());
         segmentation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

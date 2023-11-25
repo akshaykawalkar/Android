@@ -73,6 +73,12 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Login.loginUserEmail!=null) {
+            readData(Login.loginUserEmail.replace("@", "").replace(".", ""));
+        }
     }
 }

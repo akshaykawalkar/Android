@@ -45,7 +45,6 @@ public class CreateAccount extends AppCompatActivity {
             finish();
         }
     }
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +58,11 @@ public class CreateAccount extends AppCompatActivity {
         emailEditText = findViewById(R.id.create_account_email_input);
         createAccountButton = findViewById(R.id.create_account_button);
         progressBar = findViewById(R.id.progressBar);
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +125,6 @@ public class CreateAccount extends AppCompatActivity {
                         }
                     }
                 });
-
             }
         });
         textView.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +135,5 @@ public class CreateAccount extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }
