@@ -2,6 +2,7 @@ package com.akshay.webengage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -32,9 +33,8 @@ public class CreateAccount extends AppCompatActivity {
     private FirebaseDatabase db;
     private DatabaseReference reference;
     private ActivityMainBinding binding;
-    private String firstName, lastName, email;
-    static String createdUserEmail;
-
+    private String firstName, lastName, email,createdUserEmail;
+    private MyViewModel myViewModel;
     @Override
     public void onStart() {
         super.onStart();
@@ -45,6 +45,7 @@ public class CreateAccount extends AppCompatActivity {
             finish();
         }
     }
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +59,14 @@ public class CreateAccount extends AppCompatActivity {
         emailEditText = findViewById(R.id.create_account_email_input);
         createAccountButton = findViewById(R.id.create_account_button);
         progressBar = findViewById(R.id.progressBar);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
+        myViewModel=new ViewModelProvider(this).get(MyViewModel.class);
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firstName = firstNameEditText.getText().toString();
                 lastName = lastNameEditText.getText().toString();
                 createdUserEmail = emailEditText.getText().toString();
+                myViewModel.setUserEmail(createdUserEmail);
                 email = emailEditText.getText().toString().replace("@", "").replace(".", "");
 
                 if (firstName.isEmpty())
@@ -125,6 +123,7 @@ public class CreateAccount extends AppCompatActivity {
                         }
                     }
                 });
+
             }
         });
         textView.setOnClickListener(new View.OnClickListener() {
@@ -135,5 +134,6 @@ public class CreateAccount extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 }

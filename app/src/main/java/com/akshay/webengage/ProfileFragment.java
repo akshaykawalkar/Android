@@ -5,7 +5,9 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,20 +24,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
-    TextView firstNameText,lastNameText, emailText;
-    String firstName,lastName,email;
-    DatabaseReference reference;
+   private TextView firstNameText,lastNameText, emailText;
+   private DatabaseReference reference;
+  private   MyViewModel myViewModel;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState==null)
-        {
-        }
-        else {
-            firstNameText.setText(savedInstanceState.getString("firstName"));
-            lastNameText.setText(savedInstanceState.getString("lastName"));
-            emailText.setText(savedInstanceState.getString("email"));
-        }
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,9 +44,7 @@ public class ProfileFragment extends Fragment {
         firstNameText=view.findViewById(R.id.profile_first_name_value);
         lastNameText=view.findViewById(R.id.profile_last_name_value);
         emailText=view.findViewById(R.id.profile_email_value);
-        if (Login.loginUserEmail!=null) {
-            readData(Login.loginUserEmail.replace("@", "").replace(".", ""));
-        }
+
     }
     private void readData(String userEmail)
     {
@@ -60,19 +52,23 @@ public class ProfileFragment extends Fragment {
         reference.child(userEmail).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
+
                 if (task.isSuccessful())
                 {
                      if (task.getResult().exists())
                      {
                          Toast.makeText(getActivity(),"successfully read",Toast.LENGTH_SHORT).show();
                          DataSnapshot dataSnapshot=task.getResult();
-                         String firstName=String.valueOf(dataSnapshot.child("firstName").getValue());
-                         String lastName=String.valueOf(dataSnapshot.child("lastName").getValue());
-                         String email=Login.loginUserEmail;
-                         if (firstName!=null&&lastName!=null&&emailText!=null) {
-                             firstNameText.setText(firstName);
-                             lastNameText.setText(lastName);
-                             emailText.setText(email);
+                         if (myViewModel.getUserLastName()==null && myViewModel.getUserFirstName()==null){
+                         myViewModel.setUserFirstName(String.valueOf(dataSnapshot.child("firstName").getValue()));
+                         myViewModel.setUserLastName(String.valueOf(dataSnapshot.child("lastName").getValue()));}
+                         if (myViewModel.getUserFirstName()!=null&&myViewModel.getUserLastName()!=null&&myViewModel.getUserEmail()!=null) {
+                             firstNameText.setText(myViewModel.getUserFirstName());
+                             lastNameText.setText(myViewModel.getUserLastName());
+                             emailText.setText(myViewModel.getUserEmail());
+                         }
+                         else {
+                             Toast.makeText(getActivity(),"User data is not available",Toast.LENGTH_SHORT).show();
                          }
                      }
                      else {
@@ -88,15 +84,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (Login.loginUserEmail!=null) {
-            readData(Login.loginUserEmail.replace("@", "").replace(".", ""));
+        myViewModel=new ViewModelProvider(this).get(MyViewModel.class);
+        if (myViewModel.getUserEmail()!=null) {
+            Log.d("mainAk","InsideRead");
+            readData(myViewModel.getUserEmail().replace("@", "").replace(".", ""));
         }
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("fistName",firstName);
-        outState.putString("lastName",lastName);
-        outState.putString("email",email);
     }
 }

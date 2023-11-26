@@ -2,6 +2,7 @@ package com.akshay.webengage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,22 +28,20 @@ public class Login extends AppCompatActivity {
     private EditText email, password;
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
-    static String loginUserEmail;
-    static String currentPassword;
+
+    private MyViewModel myViewModel;
 
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            loginUserEmail = CreateAccount.createdUserEmail;
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
         }
     }
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +53,12 @@ public class Login extends AppCompatActivity {
         loginButton = findViewById(R.id.sign_button);
         forgotPassword = findViewById(R.id.sign_forgot_password_button);
         mAuth = FirebaseAuth.getInstance();
+        myViewModel=new ViewModelProvider(this).get(MyViewModel.class);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +71,6 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, CreateAccount.class);
                 startActivity(intent);
-                Log.d("Clicked", "Create Account");
-                Toast.makeText(Login.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -76,9 +79,9 @@ public class Login extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
                 String emailValue, passwordValue;
                 emailValue = email.getText().toString();
-                loginUserEmail = email.getText().toString();
+                myViewModel.setUserEmail(email.getText().toString());
                 passwordValue = password.getText().toString();
-                currentPassword=password.getText().toString();
+                myViewModel.setUserPassword(passwordValue);
                 if (emailValue.isEmpty())
                 {
                     email.setError("Please enter first name");
@@ -106,11 +109,6 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
     }
 }

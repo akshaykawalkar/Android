@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,24 +24,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class SettingsFragment extends Fragment {
-    FirebaseAuth auth;
-    FirebaseUser user;
-    Button logoutButton, resetPassword;
-    EditText currentPassword, newPassword, renewPassword;
-    private static String currentUserEmail;
-
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    private Button logoutButton, resetPassword;
+    private EditText currentPassword, newPassword, renewPassword;
+    private MyViewModel myViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_settings, container, false);
-
     }
 
     @Override
@@ -53,18 +50,18 @@ public class SettingsFragment extends Fragment {
         resetPassword = view.findViewById(R.id.settings_reset_password_button);
         auth = FirebaseAuth.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        myViewModel = new ViewModelProvider(this).get(MyViewModel.class);
 
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        currentUserEmail = Login.loginUserEmail;
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity().getApplicationContext(), Login.class);
+                Intent intent = new Intent(getActivity(), Login.class);
                 startActivity(intent);
             }
         });
@@ -85,12 +82,12 @@ public class SettingsFragment extends Fragment {
                     renewPassword.setError("Please re-enter new password");
                 }
                 if (!currentPasswordValue.isEmpty() && !newPasswordValue.isEmpty() && !reEnterNewPasswordValue.isEmpty()) {
-                    if (currentUserEmail.isEmpty()) {
+                    if (myViewModel.getUserEmail().isEmpty()) {
                         Toast.makeText(getActivity(), "Please logout and login to change the password", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (newPasswordValue.equalsIgnoreCase(reEnterNewPasswordValue)) {
-                        auth.signInWithEmailAndPassword(currentUserEmail, currentPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        auth.signInWithEmailAndPassword(myViewModel.getUserEmail(), currentPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 user.updatePassword(newPassword.getText().toString());
